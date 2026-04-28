@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="apple-mobile-web-app-title" content="Attendance" />
-  <title>Field Attendance</title>
+  <title>VirtuTech EG — Attendance</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +20,7 @@
       --surface:    #12121f;
       --surface2:   #1a1a2e;
       --border:     rgba(255,255,255,0.07);
-      --blue:       #3d8ef8;
+      --blue:       #00b4f0;
       --green:      #22c55e;
       --red:        #ef4444;
       --amber:      #f59e0b;
@@ -44,39 +44,76 @@
       overflow-x: hidden;
     }
 
-    /* Top bar */
+    /* LOGO */
+    .logo-header {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0 12px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-header img {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* TOP BAR */
     .topbar {
       width: 100%;
       max-width: 420px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 24px;
-      padding-top: 8px;
+      margin-bottom: 16px;
+      padding-top: 12px;
     }
+    .topbar-left { display: flex; flex-direction: column; gap: 6px; }
     .topbar-title {
       font-family: var(--mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 2px;
     }
+    .online-pill { display: flex; align-items: center; gap: 5px; }
+    .shift-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .online-text { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+
     .clock-block { text-align: right; }
+    .clock-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 3px;
+    }
     .clock {
       font-family: var(--mono);
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       font-weight: 700;
       color: var(--text);
       letter-spacing: 2px;
       line-height: 1;
     }
-    .clock-date {
+    .clock-ampm {
+      font-family: var(--mono);
       font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 3px;
+      color: var(--blue);
+      font-weight: 700;
     }
+    .clock-date { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
 
-    /* Shift status bar */
+    /* SHIFT BAR */
     .shift-bar {
       width: 100%;
       max-width: 420px;
@@ -87,17 +124,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       font-family: var(--mono);
       font-size: 0.72rem;
     }
     .shift-item { display: flex; flex-direction: column; gap: 2px; }
-    .shift-label { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
+    .shift-label { color: var(--muted); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; }
     .shift-value { color: var(--text); }
-    .shift-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    /* Cards */
+    /* CARDS */
     .card {
       width: 100%;
       max-width: 420px;
@@ -116,11 +151,21 @@
       margin-bottom: 10px;
     }
 
-    /* Input */
-    .input-wrap { position: relative; }
-    .input-wrap input {
+    /* DROPDOWN */
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      font-size: 1rem;
+    }
+    .select-wrap select {
       width: 100%;
-      padding: 12px 14px;
+      padding: 12px 36px 12px 14px;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -128,12 +173,15 @@
       font-family: var(--sans);
       font-size: 0.95rem;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
       transition: border-color 0.2s;
     }
-    .input-wrap input:focus { border-color: var(--blue); }
-    .input-wrap input::placeholder { color: var(--muted); }
+    .select-wrap select:focus { border-color: var(--blue); }
+    .select-wrap select option { background: #1a1a2e; color: var(--text); }
 
-    /* Camera */
+    /* CAMERA */
     .cam-wrap {
       width: 100%;
       aspect-ratio: 1/1;
@@ -177,7 +225,7 @@
       min-height: 16px;
     }
 
-    /* Buttons */
+    /* BUTTONS */
     .btn {
       width: 100%;
       padding: 13px;
@@ -195,16 +243,15 @@
     .btn:active:not(:disabled) { transform: scale(0.97); opacity: 0.85; }
     .btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    .btn-capture  { background: var(--blue); color: #fff; }
+    .btn-capture  { background: var(--blue);  color: #000; }
     .btn-retake   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
     .btn-checkin  { background: var(--green); color: #000; }
-    .btn-checkout { background: var(--red); color: #fff; }
+    .btn-checkout { background: var(--red);   color: #fff; }
 
-    /* Action row */
     .action-row { display: flex; gap: 10px; }
     .action-row .btn { flex: 1; }
 
-    /* Status */
+    /* STATUS */
     .status-box {
       border-radius: 10px;
       padding: 12px 14px;
@@ -215,12 +262,12 @@
       font-family: var(--sans);
     }
     .status-box.show { display: block; }
-    .s-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; }
+    .s-success { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.3);  color: #4ade80; }
     .s-error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
     .s-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
     .s-info    { background: rgba(61,142,248,0.1); border: 1px solid rgba(61,142,248,0.3); color: #60a5fa; }
 
-    /* Loading */
+    /* LOADING */
     .loading-row {
       display: none;
       align-items: center;
@@ -241,39 +288,49 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Footer */
+    /* FOOTER */
     .footer {
       margin-top: 20px;
       font-family: var(--mono);
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       color: var(--muted);
       text-align: center;
+      line-height: 1.9;
     }
+    .footer .brand { color: var(--blue); }
   </style>
 </head>
 
 <body>
 
-  <!-- Top bar -->
+  <!-- Logo Header -->
+  <div class="logo-header">
+    <img src="logo.png" alt="VirtuTech EG" />
+  </div>
+
+  <!-- Top Bar -->
   <div class="topbar">
-    <div>
+    <div class="topbar-left">
       <div class="topbar-title">Field Attendance</div>
-      <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
+      <div class="online-pill">
         <div class="shift-dot"></div>
-        <span style="font-family:var(--mono); font-size:0.65rem; color:var(--muted);">System Online</span>
+        <span class="online-text">System Online</span>
       </div>
     </div>
     <div class="clock-block">
-      <div class="clock" id="clock">00:00:00</div>
+      <div class="clock-line">
+        <span class="clock" id="clock">12:00:00</span>
+        <span class="clock-ampm" id="ampm">AM</span>
+      </div>
       <div class="clock-date" id="clock-date">---</div>
     </div>
   </div>
 
-  <!-- Shift info bar -->
+  <!-- Shift Bar -->
   <div class="shift-bar">
     <div class="shift-item">
       <span class="shift-label">Shift Start</span>
-      <span class="shift-value">13:00</span>
+      <span class="shift-value">1:00 PM</span>
     </div>
     <div class="shift-item" style="text-align:center">
       <span class="shift-label">Grace</span>
@@ -281,7 +338,7 @@
     </div>
     <div class="shift-item" style="text-align:center">
       <span class="shift-label">Shift End</span>
-      <span class="shift-value">20:00</span>
+      <span class="shift-value">8:00 PM</span>
     </div>
     <div class="shift-item" style="text-align:right">
       <span class="shift-label">OT After</span>
@@ -289,11 +346,19 @@
     </div>
   </div>
 
-  <!-- Name -->
+  <!-- Employee Dropdown -->
   <div class="card">
-    <div class="card-label">Employee Name</div>
-    <div class="input-wrap">
-      <input type="text" id="employee-name" placeholder="Enter your full name" autocomplete="name" />
+    <div class="card-label">Select Employee</div>
+    <div class="select-wrap">
+      <select id="employee-name" onchange="updateButtons()">
+        <option value="">— Select your name —</option>
+        <option value="Ahmed Sawy">Ahmed Sawy</option>
+        <option value="Mohamed Ali">Mohamed Ali</option>
+        <option value="Sara Hassan">Sara Hassan</option>
+        <option value="Khaled Omar">Khaled Omar</option>
+        <option value="Nour Ehab">Nour Ehab</option>
+        <!-- ADD MORE EMPLOYEES BELOW THIS LINE -->
+      </select>
     </div>
   </div>
 
@@ -313,7 +378,7 @@
     <div class="gps-line" id="gps-status">GPS: waiting...</div>
   </div>
 
-  <!-- Action -->
+  <!-- Actions -->
   <div class="card">
     <div class="action-row">
       <button class="btn btn-checkin"  id="checkin-btn"  onclick="submit('checkin')"  disabled>Check In</button>
@@ -328,31 +393,35 @@
     <div class="status-box" id="status-box"></div>
   </div>
 
-  <div class="footer">Shift: Mon–Thu &amp; Sat–Sun | 13:00–20:00 | Friday Off</div>
+  <div class="footer">
+    <span class="brand">VirtuTech EG</span> — Field Attendance System<br>
+    Shift: Mon–Thu &amp; Sat–Sun &nbsp;|&nbsp; 1:00 PM – 8:00 PM &nbsp;|&nbsp; Friday Off
+  </div>
 
   <script>
-    // ── CONFIG ──────────────────────────────────────────────
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_T6GVIjO3Z1s3oKCEPVB9acZ8J2ij6QykCo1hf6duP1CFo0PXhOvJeJVgDbtDuBinkg/exec';
-    // ────────────────────────────────────────────────────────
 
     let photoData = null;
     let gpsData   = null;
     let camStream = null;
 
-    // Clock
+    // 12-hour clock
     function tick() {
-      const now = new Date();
-      const h   = String(now.getHours()).padStart(2, '0');
-      const m   = String(now.getMinutes()).padStart(2, '0');
-      const s   = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+      const now  = new Date();
+      let   h    = now.getHours();
+      const m    = String(now.getMinutes()).padStart(2, '0');
+      const s    = String(now.getSeconds()).padStart(2, '0');
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
 
-      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      document.getElementById('clock').textContent = `${String(h).padStart(2,'0')}:${m}:${s}`;
+      document.getElementById('ampm').textContent  = ampm;
+
+      const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       document.getElementById('clock-date').textContent =
         `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 
-      // Warn if Friday
       if (now.getDay() === 5) {
         showStatus('Today is Friday. It is a day off.', 'warning');
       }
@@ -372,7 +441,7 @@
         video.style.display = 'block';
         document.getElementById('cam-hint').textContent = 'Position your face in frame';
       } catch (err) {
-        showStatus('Camera access denied. Please allow camera in your browser settings.', 'error');
+        showStatus('Camera access denied. Allow camera in your browser settings.', 'error');
         document.getElementById('capture-btn').disabled = true;
       }
     }
@@ -392,18 +461,16 @@
       ctx.drawImage(video, 0, 0, 480, 480);
       ctx.restore();
 
-      // Compress to JPEG 65%
       photoData = canvas.toDataURL('image/jpeg', 0.65);
 
-      preview.src          = photoData;
+      preview.src           = photoData;
       preview.style.display = 'block';
       video.style.display   = 'none';
 
       document.getElementById('capture-btn').style.display = 'none';
       document.getElementById('retake-btn').style.display  = 'block';
-      document.getElementById('cam-hint').textContent       = 'Photo taken';
+      document.getElementById('cam-hint').textContent      = 'Photo taken';
 
-      // Stop stream to save battery
       if (camStream) camStream.getTracks().forEach(t => t.stop());
 
       getGPS();
@@ -446,21 +513,19 @@
 
     // Button state
     function updateButtons() {
-      const name  = document.getElementById('employee-name').value.trim();
-      const ready = name.length > 1 && photoData !== null;
+      const name  = document.getElementById('employee-name').value;
+      const ready = name !== '' && photoData !== null;
       document.getElementById('checkin-btn').disabled  = !ready;
       document.getElementById('checkout-btn').disabled = !ready;
     }
-    document.getElementById('employee-name').addEventListener('input', updateButtons);
 
     // Submit
     async function submit(type) {
       const now  = new Date();
-      const name = document.getElementById('employee-name').value.trim();
+      const name = document.getElementById('employee-name').value;
 
-      if (!name) { showStatus('Enter your name first.', 'error'); return; }
-      if (!photoData) { showStatus('Take a selfie first.', 'error'); return; }
-
+      if (!name)      { showStatus('Select your name first.', 'error'); return; }
+      if (!photoData) { showStatus('Take a selfie first.',    'error'); return; }
       if (now.getDay() === 5) {
         showStatus('Today is Friday. Attendance not recorded.', 'warning');
         return;
@@ -472,9 +537,9 @@
         const payload = {
           name,
           type,
-          photo: photoData,
-          lat:   gpsData ? gpsData.lat : 0,
-          lng:   gpsData ? gpsData.lng : 0,
+          photo:     photoData,
+          lat:       gpsData ? gpsData.lat : 0,
+          lng:       gpsData ? gpsData.lng : 0,
           timestamp: now.toISOString()
         };
 
@@ -494,7 +559,6 @@
       setLoading(false);
     }
 
-    // UI helpers
     function setLoading(on) {
       document.getElementById('loading').classList.toggle('show', on);
       document.getElementById('checkin-btn').disabled  = on;
@@ -511,12 +575,10 @@
       document.getElementById('status-box').className = 'status-box';
     }
 
-    // Service Worker registration
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
 
-    // Start
     startCamera();
   </script>
 
