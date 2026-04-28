@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a14" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Attendance" />
+  <title>Field Attendance</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:         #0a0a14;
+      --surface:    #12121f;
+      --surface2:   #1a1a2e;
+      --border:     rgba(255,255,255,0.07);
+      --blue:       #3d8ef8;
+      --green:      #22c55e;
+      --red:        #ef4444;
+      --amber:      #f59e0b;
+      --text:       #e8e8f0;
+      --muted:      #6b6b8a;
+      --mono:       'Space Mono', monospace;
+      --sans:       'DM Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 40px;
+      overflow-x: hidden;
+    }
+
+    /* Top bar */
+    .topbar {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-top: 8px;
+    }
+    .topbar-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .clock-block { text-align: right; }
+    .clock {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .clock-date {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Shift status bar */
+    .shift-bar {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+    .shift-item { display: flex; flex-direction: column; gap: 2px; }
+    .shift-label { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
+    .shift-value { color: var(--text); }
+    .shift-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Cards */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    /* Input */
+    .input-wrap { position: relative; }
+    .input-wrap input {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-wrap input:focus { border-color: var(--blue); }
+    .input-wrap input::placeholder { color: var(--muted); }
+
+    /* Camera */
+    .cam-wrap {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .cam-wrap video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+      display: block;
+    }
+    .cam-wrap img#photo-preview {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: none;
+      border-radius: 10px;
+    }
+    .cam-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 8px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+    }
+    #canvas { display: none; }
+
+    /* GPS */
+    .gps-line {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 6px;
+      min-height: 16px;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      margin-top: 8px;
+    }
+    .btn:active:not(:disabled) { transform: scale(0.97); opacity: 0.85; }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .btn-capture  { background: var(--blue); color: #fff; }
+    .btn-retake   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .btn-checkin  { background: var(--green); color: #000; }
+    .btn-checkout { background: var(--red); color: #fff; }
+
+    /* Action row */
+    .action-row { display: flex; gap: 10px; }
+    .action-row .btn { flex: 1; }
+
+    /* Status */
+    .status-box {
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      margin-top: 10px;
+      display: none;
+      font-family: var(--sans);
+    }
+    .status-box.show { display: block; }
+    .s-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; }
+    .s-error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
+    .s-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
+    .s-info    { background: rgba(61,142,248,0.1); border: 1px solid rgba(61,142,248,0.3); color: #60a5fa; }
+
+    /* Loading */
+    .loading-row {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .loading-row.show { display: flex; }
+    .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer */
+    .footer {
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Field Attendance</div>
+      <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
+        <div class="shift-dot"></div>
+        <span style="font-family:var(--mono); font-size:0.65rem; color:var(--muted);">System Online</span>
+      </div>
+    </div>
+    <div class="clock-block">
+      <div class="clock" id="clock">00:00:00</div>
+      <div class="clock-date" id="clock-date">---</div>
+    </div>
+  </div>
+
+  <!-- Shift info bar -->
+  <div class="shift-bar">
+    <div class="shift-item">
+      <span class="shift-label">Shift Start</span>
+      <span class="shift-value">13:00</span>
+    </div>
+    <div class="shift-item" style="text-align:center">
+      <span class="shift-label">Grace</span>
+      <span class="shift-value">+5 min</span>
+    </div>
+    <div class="shift-item" style="text-align:center">
+      <span class="shift-label">Shift End</span>
+      <span class="shift-value">20:00</span>
+    </div>
+    <div class="shift-item" style="text-align:right">
+      <span class="shift-label">OT After</span>
+      <span class="shift-value">+15 min</span>
+    </div>
+  </div>
+
+  <!-- Name -->
+  <div class="card">
+    <div class="card-label">Employee Name</div>
+    <div class="input-wrap">
+      <input type="text" id="employee-name" placeholder="Enter your full name" autocomplete="name" />
+    </div>
+  </div>
+
+  <!-- Camera -->
+  <div class="card">
+    <div class="card-label">Selfie</div>
+    <div class="cam-wrap">
+      <video id="video" autoplay playsinline muted></video>
+      <img id="photo-preview" alt="Your photo" />
+      <div class="cam-overlay" id="cam-hint">Position your face in frame</div>
+    </div>
+    <canvas id="canvas"></canvas>
+
+    <button class="btn btn-capture" id="capture-btn" onclick="capturePhoto()">Take Photo</button>
+    <button class="btn btn-retake"  id="retake-btn"  onclick="retakePhoto()" style="display:none">Retake Photo</button>
+
+    <div class="gps-line" id="gps-status">GPS: waiting...</div>
+  </div>
+
+  <!-- Action -->
+  <div class="card">
+    <div class="action-row">
+      <button class="btn btn-checkin"  id="checkin-btn"  onclick="submit('checkin')"  disabled>Check In</button>
+      <button class="btn btn-checkout" id="checkout-btn" onclick="submit('checkout')" disabled>Check Out</button>
+    </div>
+
+    <div class="loading-row" id="loading">
+      <div class="spinner"></div>
+      <span>Submitting attendance...</span>
+    </div>
+
+    <div class="status-box" id="status-box"></div>
+  </div>
+
+  <div class="footer">Shift: Mon–Thu &amp; Sat–Sun | 13:00–20:00 | Friday Off</div>
+
+  <script>
+    // ── CONFIG ──────────────────────────────────────────────
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_T6GVIjO3Z1s3oKCEPVB9acZ8J2ij6QykCo1hf6duP1CFo0PXhOvJeJVgDbtDuBinkg/exec';
+    // ────────────────────────────────────────────────────────
+
+    let photoData = null;
+    let gpsData   = null;
+    let camStream = null;
+
+    // Clock
+    function tick() {
+      const now = new Date();
+      const h   = String(now.getHours()).padStart(2, '0');
+      const m   = String(now.getMinutes()).padStart(2, '0');
+      const s   = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+
+      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      document.getElementById('clock-date').textContent =
+        `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+      // Warn if Friday
+      if (now.getDay() === 5) {
+        showStatus('Today is Friday. It is a day off.', 'warning');
+      }
+    }
+    setInterval(tick, 1000);
+    tick();
+
+    // Camera
+    async function startCamera() {
+      try {
+        camStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 480 } },
+          audio: false
+        });
+        const video = document.getElementById('video');
+        video.srcObject = camStream;
+        video.style.display = 'block';
+        document.getElementById('cam-hint').textContent = 'Position your face in frame';
+      } catch (err) {
+        showStatus('Camera access denied. Please allow camera in your browser settings.', 'error');
+        document.getElementById('capture-btn').disabled = true;
+      }
+    }
+
+    function capturePhoto() {
+      const video   = document.getElementById('video');
+      const canvas  = document.getElementById('canvas');
+      const preview = document.getElementById('photo-preview');
+
+      canvas.width  = 480;
+      canvas.height = 480;
+
+      const ctx = canvas.getContext('2d');
+      ctx.save();
+      ctx.translate(480, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, 480, 480);
+      ctx.restore();
+
+      // Compress to JPEG 65%
+      photoData = canvas.toDataURL('image/jpeg', 0.65);
+
+      preview.src          = photoData;
+      preview.style.display = 'block';
+      video.style.display   = 'none';
+
+      document.getElementById('capture-btn').style.display = 'none';
+      document.getElementById('retake-btn').style.display  = 'block';
+      document.getElementById('cam-hint').textContent       = 'Photo taken';
+
+      // Stop stream to save battery
+      if (camStream) camStream.getTracks().forEach(t => t.stop());
+
+      getGPS();
+      updateButtons();
+    }
+
+    function retakePhoto() {
+      photoData = null;
+      gpsData   = null;
+      document.getElementById('photo-preview').style.display = 'none';
+      document.getElementById('capture-btn').style.display   = 'block';
+      document.getElementById('retake-btn').style.display    = 'none';
+      document.getElementById('gps-status').textContent      = 'GPS: waiting...';
+      hideStatus();
+      updateButtons();
+      startCamera();
+    }
+
+    // GPS
+    function getGPS() {
+      document.getElementById('gps-status').textContent = 'GPS: acquiring location...';
+      if (!navigator.geolocation) {
+        document.getElementById('gps-status').textContent = 'GPS: not supported';
+        gpsData = { lat: 0, lng: 0 };
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          gpsData = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          document.getElementById('gps-status').textContent =
+            `GPS: ${gpsData.lat.toFixed(5)}, ${gpsData.lng.toFixed(5)}`;
+        },
+        () => {
+          document.getElementById('gps-status').textContent = 'GPS: permission denied';
+          gpsData = { lat: 0, lng: 0 };
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    }
+
+    // Button state
+    function updateButtons() {
+      const name  = document.getElementById('employee-name').value.trim();
+      const ready = name.length > 1 && photoData !== null;
+      document.getElementById('checkin-btn').disabled  = !ready;
+      document.getElementById('checkout-btn').disabled = !ready;
+    }
+    document.getElementById('employee-name').addEventListener('input', updateButtons);
+
+    // Submit
+    async function submit(type) {
+      const now  = new Date();
+      const name = document.getElementById('employee-name').value.trim();
+
+      if (!name) { showStatus('Enter your name first.', 'error'); return; }
+      if (!photoData) { showStatus('Take a selfie first.', 'error'); return; }
+
+      if (now.getDay() === 5) {
+        showStatus('Today is Friday. Attendance not recorded.', 'warning');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const payload = {
+          name,
+          type,
+          photo: photoData,
+          lat:   gpsData ? gpsData.lat : 0,
+          lng:   gpsData ? gpsData.lng : 0,
+          timestamp: now.toISOString()
+        };
+
+        const res    = await fetch(SCRIPT_URL, {
+          method:  'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body:    JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        showStatus(result.message, result.success ? 'success' : 'error');
+
+      } catch (err) {
+        showStatus('Connection error. Check your internet and try again.', 'error');
+      }
+
+      setLoading(false);
+    }
+
+    // UI helpers
+    function setLoading(on) {
+      document.getElementById('loading').classList.toggle('show', on);
+      document.getElementById('checkin-btn').disabled  = on;
+      document.getElementById('checkout-btn').disabled = on;
+    }
+
+    function showStatus(msg, type) {
+      const box = document.getElementById('status-box');
+      box.textContent = msg;
+      box.className   = `status-box show s-${type}`;
+    }
+
+    function hideStatus() {
+      document.getElementById('status-box').className = 'status-box';
+    }
+
+    // Service Worker registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    // Start
+    startCamera();
+  </script>
+
+</body>
+</html>
