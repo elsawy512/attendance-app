@@ -16,21 +16,21 @@
 
   <style>
     :root {
-      --bg:         #0a0a14;
-      --surface:    #12121f;
-      --surface2:   #1a1a2e;
-      --border:     rgba(255,255,255,0.07);
-      --blue:       #00b4f0;
-      --green:      #22c55e;
-      --red:        #ef4444;
-      --amber:      #f59e0b;
-      --text:       #e8e8f0;
-      --muted:      #6b6b8a;
-      --mono:       'Space Mono', monospace;
-      --sans:       'DM Sans', sans-serif;
+      --bg:       #0a0a14;
+      --surface:  #12121f;
+      --surface2: #1a1a2e;
+      --border:   rgba(255,255,255,0.07);
+      --blue:     #00b4f0;
+      --green:    #22c55e;
+      --red:      #ef4444;
+      --amber:    #f59e0b;
+      --text:     #e8e8f0;
+      --muted:    #6b6b8a;
+      --mono:     'Space Mono', monospace;
+      --sans:     'DM Sans', sans-serif;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
     body {
       font-family: var(--sans);
@@ -55,11 +55,7 @@
       margin-bottom: 4px;
       border-bottom: 1px solid var(--border);
     }
-    .logo-header img {
-      height: 44px;
-      width: auto;
-      object-fit: contain;
-    }
+    .logo-header img { height: 44px; width: auto; object-fit: contain; }
 
     /* TOP BAR */
     .topbar {
@@ -71,7 +67,7 @@
       margin-bottom: 16px;
       padding-top: 12px;
     }
-    .topbar-left { display: flex; flex-direction: column; gap: 6px; }
+    .topbar-left { display:flex; flex-direction:column; gap:6px; }
     .topbar-title {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -79,231 +75,168 @@
       text-transform: uppercase;
       letter-spacing: 2px;
     }
-    .online-pill { display: flex; align-items: center; gap: 5px; }
+    .online-pill { display:flex; align-items:center; gap:5px; }
     .shift-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 6px var(--green);
+      width:6px; height:6px; border-radius:50%;
+      background:var(--green); box-shadow:0 0 6px var(--green);
       animation: pulse 2s infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .online-text { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); }
+    .online-text { font-family:var(--mono); font-size:0.62rem; color:var(--muted); }
 
-    .clock-block { text-align: right; }
-    .clock-line {
-      display: flex;
-      align-items: baseline;
-      justify-content: flex-end;
-      gap: 3px;
-    }
-    .clock {
-      font-family: var(--mono);
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 2px;
-      line-height: 1;
-    }
-    .clock-ampm {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--blue);
-      font-weight: 700;
-    }
-    .clock-date { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+    .clock-block { text-align:right; }
+    .clock-line  { display:flex; align-items:baseline; justify-content:flex-end; gap:3px; }
+    .clock       { font-family:var(--mono); font-size:1.45rem; font-weight:700; color:var(--text); letter-spacing:2px; line-height:1; }
+    .clock-ampm  { font-family:var(--mono); font-size:0.72rem; color:var(--blue); font-weight:700; }
+    .clock-date  { font-size:0.72rem; color:var(--muted); margin-top:4px; }
 
     /* SHIFT BAR */
     .shift-bar {
-      width: 100%;
-      max-width: 420px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
+      width:100%; max-width:420px;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:10px 14px;
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:14px; font-family:var(--mono); font-size:0.72rem;
     }
-    .shift-item { display: flex; flex-direction: column; gap: 2px; }
-    .shift-label { color: var(--muted); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; }
-    .shift-value { color: var(--text); }
+    .shift-item  { display:flex; flex-direction:column; gap:2px; }
+    .shift-label { color:var(--muted); font-size:0.58rem; text-transform:uppercase; letter-spacing:1px; }
+    .shift-value { color:var(--text); }
 
     /* CARDS */
     .card {
-      width: 100%;
-      max-width: 420px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 12px;
+      width:100%; max-width:420px;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:16px; margin-bottom:12px;
     }
     .card-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 10px;
+      font-family:var(--mono); font-size:0.62rem;
+      color:var(--muted); text-transform:uppercase;
+      letter-spacing:1.5px; margin-bottom:10px;
     }
 
     /* DROPDOWN */
-    .select-wrap { position: relative; }
+    .select-wrap { position:relative; }
     .select-wrap::after {
-      content: '▾';
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-      font-size: 1rem;
+      content:'▾'; position:absolute; right:14px; top:50%;
+      transform:translateY(-50%); color:var(--muted);
+      pointer-events:none; font-size:1rem;
     }
     .select-wrap select {
-      width: 100%;
-      padding: 12px 36px 12px 14px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
-      cursor: pointer;
-      transition: border-color 0.2s;
+      width:100%; padding:12px 36px 12px 14px;
+      background:var(--surface2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text);
+      font-family:var(--sans); font-size:0.95rem;
+      outline:none; appearance:none; -webkit-appearance:none;
+      cursor:pointer; transition:border-color 0.2s;
     }
-    .select-wrap select:focus { border-color: var(--blue); }
-    .select-wrap select option { background: #1a1a2e; color: var(--text); }
+    .select-wrap select:focus  { border-color:var(--blue); }
+    .select-wrap select option { background:#1a1a2e; color:var(--text); }
+    .select-wrap select:disabled { opacity:0.5; }
+
+    /* employee loading state */
+    .emp-status {
+      font-family:var(--mono); font-size:0.65rem;
+      color:var(--muted); margin-top:7px;
+      display:flex; align-items:center; gap:6px;
+      min-height:18px;
+    }
+    .emp-status .mini-spin {
+      width:10px; height:10px;
+      border:1.5px solid var(--border);
+      border-top-color:var(--blue);
+      border-radius:50%;
+      animation:spin 0.7s linear infinite;
+      flex-shrink:0;
+    }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .emp-reload {
+      margin-left:auto;
+      background:none; border:none;
+      color:var(--blue); font-family:var(--mono);
+      font-size:0.62rem; cursor:pointer;
+      text-decoration:underline; padding:0;
+    }
 
     /* CAMERA */
     .cam-wrap {
-      width: 100%;
-      aspect-ratio: 1/1;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #000;
-      position: relative;
-      margin-bottom: 10px;
+      width:100%; aspect-ratio:1/1;
+      border-radius:10px; overflow:hidden;
+      background:#000; position:relative; margin-bottom:10px;
     }
-    .cam-wrap video {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1);
-      display: block;
-    }
-    .cam-wrap img#photo-preview {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: none;
-      border-radius: 10px;
-    }
+    .cam-wrap video { width:100%; height:100%; object-fit:cover; transform:scaleX(-1); display:block; }
+    .cam-wrap img#photo-preview { width:100%; height:100%; object-fit:cover; display:none; border-radius:10px; }
     .cam-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 8px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
+      position:absolute; bottom:0; left:0; right:0; padding:8px;
+      background:linear-gradient(transparent,rgba(0,0,0,0.6));
+      font-family:var(--mono); font-size:0.65rem;
+      color:rgba(255,255,255,0.5); text-align:center;
     }
-    #canvas { display: none; }
+    #canvas { display:none; }
 
     /* GPS */
     .gps-line {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      text-align: center;
-      margin-top: 6px;
-      min-height: 16px;
+      font-family:var(--mono); font-size:0.65rem;
+      color:var(--muted); text-align:center;
+      margin-top:6px; min-height:16px;
     }
 
     /* BUTTONS */
     .btn {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: none;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s;
-      margin-top: 8px;
+      width:100%; padding:13px; border-radius:10px; border:none;
+      font-family:var(--mono); font-size:0.8rem; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; cursor:pointer;
+      transition:opacity 0.15s, transform 0.1s; margin-top:8px;
     }
-    .btn:active:not(:disabled) { transform: scale(0.97); opacity: 0.85; }
-    .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn:active:not(:disabled) { transform:scale(0.97); opacity:0.85; }
+    .btn:disabled { opacity:0.3; cursor:not-allowed; }
 
-    .btn-capture  { background: var(--blue);  color: #000; }
-    .btn-retake   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .btn-checkin  { background: var(--green); color: #000; }
-    .btn-checkout { background: var(--red);   color: #fff; }
+    .btn-capture  { background:var(--blue);     color:#000; }
+    .btn-retake   { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
+    .btn-checkin  { background:var(--green);    color:#000; }
+    .btn-checkout { background:var(--red);      color:#fff; }
 
-    .action-row { display: flex; gap: 10px; }
-    .action-row .btn { flex: 1; }
+    .action-row         { display:flex; gap:10px; }
+    .action-row .btn    { flex:1; }
 
     /* STATUS */
     .status-box {
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 0.82rem;
-      line-height: 1.4;
-      margin-top: 10px;
-      display: none;
-      font-family: var(--sans);
+      border-radius:10px; padding:12px 14px;
+      font-size:0.82rem; line-height:1.4;
+      margin-top:10px; display:none; font-family:var(--sans);
     }
-    .status-box.show { display: block; }
-    .s-success { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.3);  color: #4ade80; }
-    .s-error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
-    .s-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
-    .s-info    { background: rgba(61,142,248,0.1); border: 1px solid rgba(61,142,248,0.3); color: #60a5fa; }
+    .status-box.show { display:block; }
+    .s-success { background:rgba(34,197,94,0.1);  border:1px solid rgba(34,197,94,0.3);  color:#4ade80; }
+    .s-error   { background:rgba(239,68,68,0.1);  border:1px solid rgba(239,68,68,0.3);  color:#f87171; }
+    .s-warning { background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:#fbbf24; }
+    .s-info    { background:rgba(61,142,248,0.1); border:1px solid rgba(61,142,248,0.3); color:#60a5fa; }
 
     /* LOADING */
     .loading-row {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
+      display:none; align-items:center; justify-content:center;
+      gap:8px; padding:12px; font-family:var(--mono);
+      font-size:0.72rem; color:var(--muted);
     }
-    .loading-row.show { display: flex; }
+    .loading-row.show { display:flex; }
     .spinner {
-      width: 14px; height: 14px;
-      border: 2px solid var(--border);
-      border-top-color: var(--blue);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      width:14px; height:14px;
+      border:2px solid var(--border);
+      border-top-color:var(--blue);
+      border-radius:50%; animation:spin 0.7s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* FOOTER */
     .footer {
-      margin-top: 20px;
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.9;
+      margin-top:20px; font-family:var(--mono);
+      font-size:0.58rem; color:var(--muted);
+      text-align:center; line-height:1.9;
     }
-    .footer .brand { color: var(--blue); }
+    .footer .brand { color:var(--blue); }
   </style>
 </head>
 
 <body>
 
-  <!-- Logo Header -->
+  <!-- Logo -->
   <div class="logo-header">
     <img src="logo.png" alt="VirtuTech EG" />
   </div>
@@ -350,15 +283,14 @@
   <div class="card">
     <div class="card-label">Select Employee</div>
     <div class="select-wrap">
-      <select id="employee-name" onchange="updateButtons()">
-        <option value="">— Select your name —</option>
-        <option value="Ahmed Sawy">Ahmed Sawy</option>
-        <option value="Mohamed Ali">Mohamed Ali</option>
-        <option value="Sara Hassan">Sara Hassan</option>
-        <option value="Khaled Omar">Khaled Omar</option>
-        <option value="Nour Ehab">Nour Ehab</option>
-        <!-- ADD MORE EMPLOYEES BELOW THIS LINE -->
+      <select id="employee-name" onchange="updateButtons()" disabled>
+        <option value="">Loading employees...</option>
       </select>
+    </div>
+    <div class="emp-status" id="emp-status">
+      <div class="mini-spin"></div>
+      <span id="emp-status-text">Loading from sheet...</span>
+      <button class="emp-reload" id="reload-btn" onclick="loadEmployees()" style="display:none">Reload</button>
     </div>
   </div>
 
@@ -405,7 +337,47 @@
     let gpsData   = null;
     let camStream = null;
 
-    // 12-hour clock
+    // ── Load employees from sheet ──
+    async function loadEmployees() {
+      const select     = document.getElementById('employee-name');
+      const statusText = document.getElementById('emp-status-text');
+      const statusWrap = document.getElementById('emp-status');
+      const reloadBtn  = document.getElementById('reload-btn');
+
+      select.disabled = true;
+      select.innerHTML = '<option value="">Loading employees...</option>';
+      statusWrap.innerHTML = '<div class="mini-spin"></div><span id="emp-status-text">Loading from sheet...</span>';
+
+      try {
+        const res  = await fetch(SCRIPT_URL, { method: 'GET' });
+        const data = await res.json();
+
+        if (data.success && data.employees.length > 0) {
+          select.innerHTML = '<option value="">— Select your name —</option>';
+          data.employees.forEach(name => {
+            const opt   = document.createElement('option');
+            opt.value   = name;
+            opt.textContent = name;
+            select.appendChild(opt);
+          });
+          select.disabled = false;
+          document.getElementById('emp-status').innerHTML =
+            `<span style="color:var(--green)">&#10003;</span>
+             <span style="color:var(--muted)">${data.employees.length} employees loaded</span>
+             <button class="emp-reload" onclick="loadEmployees()">Reload</button>`;
+        } else {
+          throw new Error('No employees found');
+        }
+
+      } catch (err) {
+        select.innerHTML = '<option value="">Failed to load</option>';
+        document.getElementById('emp-status').innerHTML =
+          `<span style="color:var(--red)">&#10005; Could not load employees</span>
+           <button class="emp-reload" onclick="loadEmployees()" style="display:inline">Retry</button>`;
+      }
+    }
+
+    // ── 12-hour Clock ──
     function tick() {
       const now  = new Date();
       let   h    = now.getHours();
@@ -422,14 +394,12 @@
       document.getElementById('clock-date').textContent =
         `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 
-      if (now.getDay() === 5) {
-        showStatus('Today is Friday. It is a day off.', 'warning');
-      }
+      if (now.getDay() === 5) showStatus('Today is Friday. It is a day off.', 'warning');
     }
     setInterval(tick, 1000);
     tick();
 
-    // Camera
+    // ── Camera ──
     async function startCamera() {
       try {
         camStream = await navigator.mediaDevices.getUserMedia({
@@ -437,7 +407,7 @@
           audio: false
         });
         const video = document.getElementById('video');
-        video.srcObject = camStream;
+        video.srcObject    = camStream;
         video.style.display = 'block';
         document.getElementById('cam-hint').textContent = 'Position your face in frame';
       } catch (err) {
@@ -463,9 +433,9 @@
 
       photoData = canvas.toDataURL('image/jpeg', 0.65);
 
-      preview.src           = photoData;
-      preview.style.display = 'block';
-      video.style.display   = 'none';
+      preview.src            = photoData;
+      preview.style.display  = 'block';
+      video.style.display    = 'none';
 
       document.getElementById('capture-btn').style.display = 'none';
       document.getElementById('retake-btn').style.display  = 'block';
@@ -489,7 +459,7 @@
       startCamera();
     }
 
-    // GPS
+    // ── GPS ──
     function getGPS() {
       document.getElementById('gps-status').textContent = 'GPS: acquiring location...';
       if (!navigator.geolocation) {
@@ -511,7 +481,7 @@
       );
     }
 
-    // Button state
+    // ── Buttons ──
     function updateButtons() {
       const name  = document.getElementById('employee-name').value;
       const ready = name !== '' && photoData !== null;
@@ -519,7 +489,7 @@
       document.getElementById('checkout-btn').disabled = !ready;
     }
 
-    // Submit
+    // ── Submit ──
     async function submit(type) {
       const now  = new Date();
       const name = document.getElementById('employee-name').value;
@@ -535,11 +505,9 @@
 
       try {
         const payload = {
-          name,
-          type,
-          photo:     photoData,
-          lat:       gpsData ? gpsData.lat : 0,
-          lng:       gpsData ? gpsData.lng : 0,
+          name, type, photo: photoData,
+          lat:  gpsData ? gpsData.lat : 0,
+          lng:  gpsData ? gpsData.lng : 0,
           timestamp: now.toISOString()
         };
 
@@ -579,7 +547,9 @@
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
 
+    // Start both
     startCamera();
+    loadEmployees();
   </script>
 
 </body>
